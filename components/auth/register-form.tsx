@@ -1,14 +1,8 @@
 'use client';
 
+import { register } from '@/actions/register';
 import { FormError } from '@/components/form-error';
 import { FormSuccess } from '@/components/form-success';
-import { SignupSchema } from '@/schemas';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { CardWrapper } from './card-wrapper';
-
-import { register } from '@/actions/register';
 import {
   Form,
   FormControl,
@@ -17,9 +11,14 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { SignupSchema } from '@/schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
+import { CardWrapper } from './card-wrapper';
 
 export const RegisterForm = () => {
   const [isPending, startTransition] = useTransition();
@@ -35,7 +34,6 @@ export const RegisterForm = () => {
     },
   });
 
-
   // ? Function to Register a User
   const onSubmit = (values: z.infer<typeof SignupSchema>) => {
     setError('');
@@ -43,9 +41,12 @@ export const RegisterForm = () => {
 
     startTransition(() => {
       register(values).then((data) => {
-        setError(data.error);
-        setSuccess(data.success);
-        
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setSuccess(data.success);
+          form.reset();
+        }
       });
     });
   };
