@@ -23,8 +23,6 @@ export const login = async (values: z.infer<typeof LoginSchema>) =>{
         if(error instanceof AuthError){
             console.log(error)
             switch(error.type){
-                case "CallbackRouteError":
-                    return {error: "Callback Route Error"}
                 case "CredentialsSignin":
                     return {error: "Invalid Credentials"}
                 default:
@@ -36,6 +34,11 @@ export const login = async (values: z.infer<typeof LoginSchema>) =>{
 }
 
 
-// TODO: If invalid credentials are entered it is giving CallbackRouteError, Instead of Invalid Credentials, which should be fixed.
+/**
+ * TODO: If invalid credentials are entered it is giving CallbackRouteError,
+ * Instead of Invalid Credentials, which should be fixed.
+ * Error shows that it could because of the authorize function in "auth.config.ts" and because of jwt
+ *
+*/
 
 
