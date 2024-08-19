@@ -11,13 +11,12 @@ export const LoginSchema = z.object({
 
 export const SignupSchema = z.object({
   email: z.string().email({
-    message: "Email is Required"
+    message: 'Email is Required',
   }),
   password: z.string().min(6, {
-    message: "Minimum 6 characters Required"
+    message: 'Minimum 6 characters Required',
   }),
-  name: z.string().min(1,{
-    message: "Name is Required"
-  })
-
+  name: z.string().min(1, {
+    message: 'Name is Required',
+  }),
 });

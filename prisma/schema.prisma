@@ -9,22 +9,21 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url  	    = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id            String          @id @default(cuid())
+  id            String    @id @default(cuid())
   name          String?
-  email         String          @unique
+  email         String    @unique
   emailVerified DateTime?
   image         String?
   password      String?
   accounts      Account[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
-
 
 model Account {
   userId            String
@@ -47,3 +46,5 @@ model Account {
   @@id([provider, providerAccountId])
 }
 
+// Todo: If you start the project from scratch don't forget to push the model to the database.
+// pnpm dlx prisma db push

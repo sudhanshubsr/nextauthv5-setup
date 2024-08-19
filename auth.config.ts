@@ -1,13 +1,14 @@
-import type { NextAuthConfig } from "next-auth"
 import bcrypt from 'bcryptjs';
-import Credentials from "next-auth/providers/credentials"
-import { LoginSchema } from "./schemas"
-import { getUserByEmail } from "./data/user"
-import { ZodError } from "zod";
+import type { NextAuthConfig } from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
+import { ZodError } from 'zod';
+import { getUserByEmail } from './data/user';
+import { LoginSchema } from './schemas';
 
-
-export default { providers: [Credentials({
-    authorize: async (credentials) => {
+export default {
+  providers: [
+    Credentials({
+      authorize: async (credentials) => {
         try {
           const validatedFields = await LoginSchema.parseAsync(credentials);
           const { email, password } = validatedFields;
@@ -19,11 +20,13 @@ export default { providers: [Credentials({
           const passwordMatch = await bcrypt.compare(password, user.password);
           if (passwordMatch) {
             return user;
-          } else{
-            return null
+          } else {
+            return null;
           }
         } catch (error) {
           return null;
         }
-      }
-})] } satisfies NextAuthConfig
+      },
+    }),
+  ],
+} satisfies NextAuthConfig;
