@@ -6,6 +6,15 @@ import { prisma } from './lib/db';
 import { getUserById } from './services/user';
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
+  events: {
+    async linkAccount({ user }) {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: { emailVerified: new Date() },
+      });
+    },
+  },
+
   callbacks: {
     // async signIn({ user }) {
     //   const existingUser = await getUserById(user.id as string);
