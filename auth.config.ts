@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import type { NextAuthConfig } from 'next-auth';
+import { AuthError, type NextAuthConfig } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { ZodError } from 'zod';
 import { getUserByEmail } from './data/user';
@@ -15,13 +15,13 @@ export default {
           const user = await getUserByEmail(email);
 
           if (!user || !user.password) {
-            return null;
+            throw new AuthError('CredentialsSignin');
           }
           const passwordMatch = await bcrypt.compare(password, user.password);
           if (passwordMatch) {
             return user;
           } else {
-            return null;
+            throw new AuthError('CredentialsSignin');
           }
         } catch (error) {
           return null;
