@@ -52,5 +52,14 @@ model Account {
   @@id([provider, providerAccountId])
 }
 
+model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
 // Todo: If you start the project from scratch don't forget to push the model to the database.
 // pnpm dlx prisma db push
